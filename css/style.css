@@ -1,0 +1,113 @@
+/* 全体のリセットとスマホ向け基本設定 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+    background-color: #121214;
+    color: #e0e0e0;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #f3c66f; /* エオルゼア風のゴールド */
+    text-align: center;
+}
+
+/* 入力フォームのスタイル */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #1a1a1e;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #2d2d35;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    color: #aaa;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 10px;
+    background-color: #25252b;
+    border: 1px solid #3e3e4a;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+/* ボタンのスタイル */
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #c59b4c, #9a732a);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    margin-top: 10px;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* プレビュー・出力エリア */
+.output-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* 描画用のCanvas（画面上は隠す） */
+canvas {
+    display: none;
+}
+
+/* 完成した画像の表示エリア */
+#resultImage {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #3e3e4a;
+    margin-top: 15px;
+    display: none;
+}
+
+.download-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 8px;
+    display: none;
+}
+
+/* フッター（権利表記） */
+footer {
+    margin-top: auto;
+    padding-top: 30px;
+    font-size: 0.7rem;
+    color: #666;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
