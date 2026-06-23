@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FF14 キャラクターカードジェネレーター</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -12,48 +12,143 @@
 
     <div class="form-container">
         <div class="form-group">
-            <label for="bgImage">1. 背景画像を選択 (スクリーンショットなど)</label>
+            <label>🖼️ カードの向き（解像度）</label>
+            <div class="radio-list-row">
+                <label><input type="radio" name="cardOrientation" value="horizontal" checked> 横型 (1545 × 1000px)</label>
+                <label><input type="radio" name="cardOrientation" value="vertical"> 縦型 (1000 × 1545px)</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>🎨 テーマカラー調整 (RGB)</label>
+            <div class="rgb-sliders">
+                <div class="slider-row">
+                    <span>R</span>
+                    <input type="range" id="slideR" min="0" max="255" value="197">
+                </div>
+                <div class="slider-row">
+                    <span>G</span>
+                    <input type="range" id="slideG" min="0" max="255" value="155">
+                </div>
+                <div class="slider-row">
+                    <span>B</span>
+                    <input type="range" id="slideB" min="0" max="255" value="76">
+                </div>
+                <div class="color-preview-container">
+                    <span>プレビュー:</span>
+                    <div id="colorPreview"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="bgImage">1. 背景画像を選択</label>
             <input type="file" id="bgImage" accept="image/*">
         </div>
+        
         <div class="form-group">
-            <label for="charName">2. キャラクター名 (Character Name)</label>
+            <label for="charName">2. キャラクター名</label>
             <input type="text" id="charName" placeholder="Namae Choco">
         </div>
+        
         <div class="form-group">
-            <label for="serverName">3. 所属データセンター / ワールド</label>
-            <input type="text" id="serverName" placeholder="Mana / Chocobo">
-        </div>
-        <div class="form-group">
-            <label for="mainJob">4. メインジョブ</label>
-            <select id="mainJob">
-                <option value="ナイト">ナイト (Paladin)</option>
-                <option value="戦士">戦士 (Warrior)</option>
-                <option value="暗黒騎士">暗黒騎士 (Dark Knight)</option>
-                <option value="ガンブレイカー">ガンブレイカー (Gunbreaker)</option>
-                <option value="白魔道士">白魔道士 (White Mage)</option>
-                <option value="学者">学者 (Scholar)</option>
-                <option value="占星術師">占星術師 (Astrologian)</option>
-                <option value="賢者">賢者 (Sage)</option>
-                <option value="モンク">モンク (Monk)</option>
-                <option value="竜騎士">竜騎士 (Dragoon)</option>
-                <option value="忍者">忍者 (Ninja)</option>
-                <option value="侍">侍 (Samurai)</option>
-                <option value="リーパー">リーパー (Reaper)</option>
-                <option value="ヴァイパー">ヴァイパー (Viper)</option>
-                <option value="吟遊詩人">吟遊詩人 (Bard)</option>
-                <option value="機工士">機工士 (Machinist)</option>
-                <option value="踊り子">踊り子 (Dancer)</option>
-                <option value="黒魔道士">黒魔道士 (Black Mage)</option>
-                <option value="召喚士">召喚士 (Summoner)</option>
-                <option value="赤魔道士">赤魔道士 (Red Mage)</option>
-                <option value="ピクトマンサー">ピクトマンサー (Pictomancer)</option>
+            <label for="dcSelect">3. 所属データセンター (DC)</label>
+            <select id="dcSelect">
+                <option value="">選択してください</option>
+                <option value="Elemental">Elemental</option>
+                <option value="Gaia">Gaia</option>
+                <option value="Mana">Mana</option>
+                <option value="Meteor">Meteor</option>
             </select>
         </div>
 
-        <button type="button" id="generateBtn">カードを生成する</button>
+        <div class="form-group">
+            <label for="worldSelect">4. 所属ワールド (World)</label>
+            <select id="worldSelect" disabled>
+                <option value="">先にDCを選択してください</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="mainJob">5. メインジョブ</label>
+            <select id="mainJob">
+                <optgroup label="🛡️ タンク (TANK)">
+                    <option value="ナイト">ナイト</option>
+                    <option value="戦士">戦士</option>
+                    <option value="暗黒騎士">暗黒騎士</option>
+                    <option value="ガンブレイカー">ガンブレイカー</option>
+                </optgroup>
+                <optgroup label="🟢 ヒーラー (HEALER)">
+                    <option value="白魔道士">白魔道士</option>
+                    <option value="学者">学者</option>
+                    <option value="占星術師">占星術師</option>
+                    <option value="賢者">賢者</option>
+                </optgroup>
+                <optgroup label="🔴 メレーDPS">
+                    <option value="モンク">モンク</option>
+                    <option value="竜騎士">竜騎士</option>
+                    <option value="忍者">忍者</option>
+                    <option value="侍">侍</option>
+                    <option value="リーパー">リーパー</option>
+                    <option value="ヴァイパー">ヴァイパー</option>
+                </optgroup>
+                <optgroup label="🟢 レンジDPS">
+                    <option value="吟遊詩人">吟遊詩人</option>
+                    <option value="機工士">機工士</option>
+                    <option value="踊り子">踊り子</option>
+                </optgroup>
+                <optgroup label="🟣 キャスターDPS">
+                    <option value="黒魔道士">黒魔道士</option>
+                    <option value="召喚士">召喚士</option>
+                    <option value="赤魔道士">赤魔道士</option>
+                    <option value="ピクトマンサー">ピクトマンサー</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>6. プレイスタイル（複数選択可）</label>
+            <div class="checkbox-grid">
+                <label><input type="checkbox" name="style" value="ストーリー"> ストーリー</label>
+                <label><input type="checkbox" name="style" value="高難易度レイド"> レイド戦闘</label>
+                <label><input type="checkbox" name="style" value="ギャザクラ"> ギャザクラ</label>
+                <label><input type="checkbox" name="style" value="SS撮影"> SS撮影</label>
+                <label><input type="checkbox" name="style" value="ハウジング"> ハウジング</label>
+                <label><input type="checkbox" name="style" value="雑談/大衆酒場"> 雑談/RP</label>
+                <label><input type="checkbox" name="style" value="PvP"> PvP</label>
+                <label><input type="checkbox" name="style" value="ミラプリ"> ミラプリ</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>7. 好きな種族（複数選択可）</label>
+            <div class="checkbox-grid">
+                <label><input type="checkbox" name="race" value="ヒューラン"> ヒューラン</label>
+                <label><input type="checkbox" name="race" value="エレゼン"> エレゼン</label>
+                <label><input type="checkbox" name="race" value="ララフェル"> ララフェル</label>
+                <label><input type="checkbox" name="race" value="ミコッテ"> ミコッテ</label>
+                <label><input type="checkbox" name="race" value="ルガディン"> ルガディン</label>
+                <label><input type="checkbox" name="race" value="アウラ"> アウラ</label>
+                <label><input type="checkbox" name="race" value="ロスガル">ロスガル</label>
+                <label><input type="checkbox" name="race" value="ヴィエラ"> ヴィエラ</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>8. 最新ストーリー進行度</label>
+            <div class="radio-list">
+                <label><input type="radio" name="progress" value="新生エオルゼア (2.x)" checked> 新生エオルゼア</label>
+                <label><input type="radio" name="progress" value="蒼天のイシュガルド (3.x)"> 蒼天のイシュガルド</label>
+                <label><input type="radio" name="progress" value="紅蓮のリベレーター (4.x)"> 紅蓮のリベレーター</label>
+                <label><input type="radio" name="progress" value="漆黒のヴィランズ (5.x)"> 漆黒のヴィランズ</label>
+                <label><input type="radio" name="progress" value="暁月のフィナーレ (6.x)"> 暁月のフィナーレ</label>
+                <label><input type="radio" name="progress" value="黄金のレガシー (7.x)"> 黄金のレガシー</label>
+            </div>
+        </div>
     </div>
 
     <div class="output-container">
+        <h2>✨ プレビュー ✨</h2>
         <canvas id="cardCanvas"></canvas>
         <img id="resultImage" alt="生成されたキャラクターカード">
         <p class="download-note" id="downloadNote">画像を長押しして保存してください</p>
@@ -64,6 +159,6 @@
         <p>※本サイトは非公式のファンサイトです。</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,192 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+    background-color: #121214;
+    color: #e0e0e0;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #f3c66f;
+    text-align: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #1a1a1e;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #2d2d35;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    color: #f3c66f;
+    font-weight: bold;
+}
+
+.form-group input[type="text"], .form-group select {
+    width: 100%;
+    padding: 10px;
+    background-color: #25252b;
+    border: 1px solid #3e3e4a;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.radio-list-row {
+    display: flex;
+    gap: 10px;
+}
+.radio-list-row label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: #25252b;
+    padding: 10px 5px;
+    border-radius: 4px;
+    border: 1px solid #3e3e4a;
+    font-size: 0.8rem;
+    justify-content: center;
+    cursor: pointer;
+}
+.radio-list-row input {
+    margin-right: 5px;
+}
+
+.rgb-sliders {
+    background-color: #25252b;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3e3e4a;
+}
+.slider-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.slider-row span {
+    width: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #aaa;
+}
+.slider-row input[type="range"] {
+    flex: 1;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.color-preview-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+#colorPreview {
+    width: 40px;
+    height: 20px;
+    border-radius: 3px;
+    margin-left: 10px;
+    border: 1px solid #fff;
+    background-color: rgb(197, 155, 76);
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.checkbox-grid label, .radio-list label {
+    display: flex;
+    align-items: center;
+    background-color: #25252b;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #3e3e4a;
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+}
+.checkbox-grid input, .radio-list input {
+    margin-right: 8px;
+    transform: scale(1.1);
+}
+
+.radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+optgroup {
+    background-color: #1a1a1e;
+    color: #f3c66f;
+    font-weight: bold;
+}
+option {
+    background-color: #25252b;
+    color: #fff;
+}
+
+/* プレビュー・出力エリア */
+.output-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border-top: 2px dashed #3e3e4a;
+    padding-top: 20px;
+}
+.output-container h2 {
+    font-size: 1.1rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+canvas {
+    display: none;
+}
+
+#resultImage {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #3e3e4a;
+    display: block; /* 最初から表示エリアを確保 */
+    background-color: #1a1a1e; /* 画像がない時のダミー背景 */
+    min-height: 250px;
+}
+
+.download-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 8px;
+}
+
+footer {
+    margin-top: auto;
+    padding-top: 30px;
+    font-size: 0.7rem;
+    color: #666;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
