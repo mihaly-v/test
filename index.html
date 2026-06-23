@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FF14 キャラクターカードジェネレーター</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Meow+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,31 +15,56 @@
 
     <div class="form-container">
         <div class="form-group">
-            <label>🖼️ カードの向き（解像度）</label>
+            <label>🖼️ カードの向き（解像度）※表面のみ適用</label>
             <div class="radio-list-row">
-                <label><input type="radio" name="cardOrientation" value="horizontal" checked> 横型 (1545 × 1000px)</label>
-                <label><input type="radio" name="cardOrientation" value="vertical"> 縦型 (1000 × 1545px)</label>
+                <label><input type="radio" name="cardOrientation" value="horizontal" checked> 横型</label>
+                <label><input type="radio" name="cardOrientation" value="vertical"> 縦型</label>
+            </div>
+        </div>
+
+        <div class="form-group-box">
+            <label>🧭 画面レイアウトの配置パターン</label>
+            <div class="radio-list">
+                <label>
+                    <input type="radio" name="layoutPattern" value="A" checked> 
+                    <span><strong>パターンA:</strong> 名前【右上】 ＆ プロフィール【左下】</span>
+                </label>
+                <label style="margin-top: 4px;">
+                    <input type="radio" name="layoutPattern" value="B"> 
+                    <span><strong>パターンB:</strong> 名前【right下】 ＆ プロフィール【左上】</span>
+                </label>
             </div>
         </div>
 
         <div class="form-group">
-            <label>🎨 テーマカラー調整 (RGB)</label>
-            <div class="rgb-sliders">
-                <div class="slider-row">
-                    <span>R</span>
-                    <input type="range" id="slideR" min="0" max="255" value="197">
+            <label for="themeColorPicker">🎨 変更：テーマカラー（裏面の背景色）</label>
+            <input type="color" id="themeColorPicker" value="#c59b4c" style="width:100%; height:40px; cursor:pointer; border:1px solid #3e3e4a; border-radius:4px;">
+        </div>
+
+        <!-- 🆕 裏面の文字色選択（白 or 黒） -->
+        <div class="form-group-box">
+            <label>🌓 裏面の文字色</label>
+            <div class="radio-list-row">
+                <label><input type="radio" name="backTextColor" value="#ffffff" checked> ⚪ 白文字</label>
+                <label><input type="radio" name="backTextColor" value="#000000"> ⚫ 黒文字</label>
+            </div>
+        </div>
+
+        <div class="form-group-box">
+            <label>✍️ 表面テキストカスタム（名前＆ワールド名）</label>
+            <div class="form-group-row">
+                <div>
+                    <span class="sub-label">フォントスタイル</span>
+                    <select id="textFontFamily">
+                        <option value="sans-serif">角ゴシック</option>
+                        <option value="'Hiragino Mincho ProN', serif">明朝体</option>
+                        <option value="'Yu Gothic', sans-serif">UIゴシック</option>
+                        <option value="'Hachi Maru Pop', cursive">手書き風(Hachi Maru)</option>
+                    </select>
                 </div>
-                <div class="slider-row">
-                    <span>G</span>
-                    <input type="range" id="slideG" min="0" max="255" value="155">
-                </div>
-                <div class="slider-row">
-                    <span>B</span>
-                    <input type="range" id="slideB" min="0" max="255" value="76">
-                </div>
-                <div class="color-preview-container">
-                    <span>プレビュー:</span>
-                    <div id="colorPreview"></div>
+                <div>
+                    <span class="sub-label">文字の色</span>
+                    <input type="color" id="textColorPicker" value="#ffffff" style="width:100%; height:40px; cursor:pointer; border:1px solid #3e3e4a; border-radius:4px;">
                 </div>
             </div>
         </div>
@@ -50,11 +78,17 @@
             <label for="charName">2. キャラクター名</label>
             <input type="text" id="charName" placeholder="Namae Choco">
         </div>
+
+        <div class="form-group">
+            <label for="backComment">3. 裏面用自由コメント（改行できます）</label>
+            <textarea id="backComment" rows="3" placeholder="いつも遊んでくれてありがとう！&#13;&#10;これからもよろしくね！"></textarea>
+        </div>
         
         <div class="form-group">
-            <label for="dcSelect">3. 所属データセンター (DC)</label>
+            <label for="dcSelect">4. 所属データセンター (DC)</label>
             <select id="dcSelect">
                 <option value="">選択してください</option>
+                <option value="Secret">Secret (非表示)</option>
                 <option value="Elemental">Elemental</option>
                 <option value="Gaia">Gaia</option>
                 <option value="Mana">Mana</option>
@@ -63,14 +97,14 @@
         </div>
 
         <div class="form-group">
-            <label for="worldSelect">4. 所属ワールド (World)</label>
+            <label for="worldSelect">5. 所属ワールド (World)</label>
             <select id="worldSelect" disabled>
                 <option value="">先にDCを選択してください</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="mainJob">5. メインジョブ</label>
+            <label for="mainJob">6. メインジョブ</label>
             <select id="mainJob">
                 <optgroup label="🛡️ タンク (TANK)">
                     <option value="ナイト">ナイト</option>
@@ -107,51 +141,56 @@
         </div>
 
         <div class="form-group">
-            <label>6. プレイスタイル（複数選択可）</label>
+            <label>7. プレイスタイル</label>
             <div class="checkbox-grid">
                 <label><input type="checkbox" name="style" value="ストーリー"> ストーリー</label>
-                <label><input type="checkbox" name="style" value="高難易度レイド"> レイド戦闘</label>
+                <label><input type="checkbox" name="style" value="レイド戦闘"> レイド戦闘</label>
                 <label><input type="checkbox" name="style" value="ギャザクラ"> ギャザクラ</label>
                 <label><input type="checkbox" name="style" value="SS撮影"> SS撮影</label>
                 <label><input type="checkbox" name="style" value="ハウジング"> ハウジング</label>
-                <label><input type="checkbox" name="style" value="雑談/大衆酒場"> 雑談/RP</label>
+                <label><input type="checkbox" name="style" value="雑談/RP"> 雑談/RP</label>
                 <label><input type="checkbox" name="style" value="PvP"> PvP</label>
                 <label><input type="checkbox" name="style" value="ミラプリ"> ミラプリ</label>
             </div>
         </div>
 
         <div class="form-group">
-            <label>7. 好きな種族（複数選択可）</label>
+            <label>8. 好きな種族</label>
             <div class="checkbox-grid">
-                <label><input type="checkbox" name="race" value="ヒューラン"> ヒューラン</label>
-                <label><input type="checkbox" name="race" value="エレゼン"> エレゼン</label>
-                <label><input type="checkbox" name="race" value="ララフェル"> ララフェル</label>
-                <label><input type="checkbox" name="race" value="ミコッテ"> ミコッテ</label>
-                <label><input type="checkbox" name="race" value="ルガディン"> ルガディン</label>
-                <label><input type="checkbox" name="race" value="アウラ"> アウラ</label>
-                <label><input type="checkbox" name="race" value="ロスガル">ロスガル</label>
-                <label><input type="checkbox" name="race" value="ヴィエラ"> ヴィエラ</label>
+                <label><input type="checkbox" name="race" value="Hyur"> Hyur</label>
+                <label><input type="checkbox" name="race" value="Elezen"> Elezen</label>
+                <label><input type="checkbox" name="race" value="Lalafell"> Lalafell</label>
+                <label><input type="checkbox" name="race" value="Miqo'te"> Miqo'te</label>
+                <label><input type="checkbox" name="race" value="Roegadyn"> Roegadyn</label>
+                <label><input type="checkbox" name="race" value="Au Ra"> Au Ra</label>
+                <label><input type="checkbox" name="race" value="Hrothgar"> Hrothgar</label>
+                <label><input type="checkbox" name="race" value="Viera"> Viera</label>
             </div>
         </div>
 
         <div class="form-group">
-            <label>8. 最新ストーリー進行度</label>
+            <label>9. 最新ストーリー進行度</label>
             <div class="radio-list">
-                <label><input type="radio" name="progress" value="新生エオルゼア (2.x)" checked> 新生エオルゼア</label>
-                <label><input type="radio" name="progress" value="蒼天のイシュガルド (3.x)"> 蒼天のイシュガルド</label>
-                <label><input type="radio" name="progress" value="紅蓮のリベレーター (4.x)"> 紅蓮のリベレーター</label>
-                <label><input type="radio" name="progress" value="漆黒のヴィランズ (5.x)"> 漆黒のヴィランズ</label>
-                <label><input type="radio" name="progress" value="暁月のフィナーレ (6.x)"> 暁月のフィナーレ</label>
-                <label><input type="radio" name="progress" value="黄金のレガシー (7.x)"> 黄金のレガシー</label>
+                <label><input type="radio" name="progress" value="0" checked> 新生エオルゼア</label>
+                <label><input type="radio" name="progress" value="1"> 蒼天のイシュガルド</label>
+                <label><input type="radio" name="progress" value="2"> 紅蓮のリベレーター</label>
+                <label><input type="radio" name="progress" value="3"> 漆黒のヴィランズ</label>
+                <label><input type="radio" name="progress" value="4"> 暁月のフィナーレ</label>
+                <label><input type="radio" name="progress" value="5"> 黄金のレガシー</label>
             </div>
         </div>
     </div>
 
     <div class="output-container">
-        <h2>✨ プレビュー ✨</h2>
+        <h2>✨ プレビュー（表面） ✨</h2>
         <canvas id="cardCanvas"></canvas>
-        <img id="resultImage" alt="生成されたキャラクターカード">
-        <p class="download-note" id="downloadNote">画像を長押しして保存してください</p>
+        <img id="resultImage" alt="表面プレビュー">
+        
+        <h2 style="margin-top: 30px;">✨ プレビュー（裏面 / トレカ風） ✨</h2>
+        <canvas id="cardCanvasBack"></canvas>
+        <img id="resultImageBack" alt="裏面プレビュー">
+        
+        <p class="download-note">画像を長押しして保存してください</p>
     </div>
 
     <footer>

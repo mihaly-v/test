@@ -35,6 +35,27 @@ h1 {
     margin-bottom: 20px;
 }
 
+.form-group-box {
+    margin-bottom: 20px;
+    background-color: #25252b;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3e3e4a;
+}
+.form-group-row {
+    display: flex;
+    gap: 12px;
+}
+.form-group-row > div {
+    flex: 1;
+}
+.sub-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-bottom: 4px;
+}
+
 .form-group label {
     display: block;
     font-size: 0.85rem;
@@ -43,7 +64,19 @@ h1 {
     font-weight: bold;
 }
 
-.form-group input[type="text"], .form-group select {
+textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #25252b;
+    border: 1px solid #3e3e4a;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.form-container input[type="text"], .form-container select {
     width: 100%;
     padding: 10px;
     background-color: #25252b;
@@ -71,44 +104,6 @@ h1 {
 }
 .radio-list-row input {
     margin-right: 5px;
-}
-
-.rgb-sliders {
-    background-color: #25252b;
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #3e3e4a;
-}
-.slider-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-.slider-row span {
-    width: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #aaa;
-}
-.slider-row input[type="range"] {
-    flex: 1;
-    margin-left: 10px;
-    cursor: pointer;
-}
-.color-preview-container {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    font-size: 0.8rem;
-    color: #aaa;
-}
-#colorPreview {
-    width: 40px;
-    height: 20px;
-    border-radius: 3px;
-    margin-left: 10px;
-    border: 1px solid #fff;
-    background-color: rgb(197, 155, 76);
 }
 
 .checkbox-grid {
@@ -148,7 +143,6 @@ option {
     color: #fff;
 }
 
-/* プレビュー・出力エリア */
 .output-container {
     width: 100%;
     max-width: 400px;
@@ -166,13 +160,14 @@ canvas {
     display: none;
 }
 
-#resultImage {
+#resultImage, #resultImageBack {
     width: 100%;
     border-radius: 6px;
     border: 1px solid #3e3e4a;
-    display: block; /* 最初から表示エリアを確保 */
-    background-color: #1a1a1e; /* 画像がない時のダミー背景 */
+    display: block;
+    background-color: #1a1a1e;
     min-height: 250px;
+    margin-bottom: 15px;
 }
 
 .download-note {
