@@ -1,187 +1,330 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+:root {
+    --bg-main: #f1f3f7;
+    --bg-panel: #ffffff;
+    --text-main: #131619;
+    --text-muted: #626973;
+    --border-flat: #e1e7f0;
+    --border-focus: #00f0ff;
+    
+    --radius-sm: 3px;
+    --radius-md: 6px;
+    --transition: all 0.15s ease-in-out;
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-    background-color: #121214;
-    color: #e0e0e0;
-    padding: 20px 15px;
+    font-family: 'Helvetica Neue', Arial, 'Noto Sans JP', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+header {
+    background-color: var(--bg-panel);
+    border-bottom: 2px solid var(--border-flat);
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    z-index: 100;
+}
+.header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+}
+.lang-switcher { display: flex; gap: 6px; }
+.lang-btn {
+    background: var(--bg-main);
+    border: 1px solid var(--border-flat);
+    color: var(--text-muted);
+    padding: 4px 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+}
+.lang-btn.active, .lang-btn:hover {
+    background: var(--text-main);
+    color: #fff;
+    border-color: var(--text-main);
+}
+
+.center-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--bg-main);
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: nowrap;
+    justify-content: center; /* 一体化させ中央へ寄せる */
+    width: 100%;
+    max-width: 1220px; /* ⚠️ 600px + 600px + 間隔固定20px = 1220px */
+    height: calc(100vh - 56px);
+}
+
+/* ⚙️ 左側：メニュー (最大横幅 600px) */
+.control-panel {
+    width: 50%;
+    max-width: 600px; /* 👈 600pxに固定制限 */
+    flex-shrink: 0;
+    background-color: var(--bg-panel);
+    border-left: 2px solid var(--border-flat);
+    padding: 16px;
+    overflow-y: auto;
+}
+
+/* 🖼️ 右側：プレビュー (最大横幅 600px / 間隔は20pxで完全固定) */
+.preview-panel {
+    width: 50%;
+    max-width: 600px; /* 👈 600pxに固定制限 */
+    flex-shrink: 0;
+    background-color: var(--bg-main);
+    border-left: 20px solid var(--bg-main); /* 👈 パネル間隔を常に20pxに完全固定 */
+    border-right: 2px solid var(--border-flat);
+    padding: 20px 20px 20px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    justify-content: flex-start;
+    overflow-y: auto;
+    gap: 16px;
 }
 
-h1 {
-    font-size: 1.4rem;
-    margin-bottom: 20px;
-    color: #f3c66f;
-    text-align: center;
-}
-
-.form-container {
-    width: 100%;
-    max-width: 400px;
-    background-color: #1a1a1e;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #2d2d35;
-    margin-bottom: 25px;
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    color: var(--text-main);
+    margin: 18px 0 8px 0;
+    border-left: 4px solid var(--text-main);
+    padding-left: 8px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    background: var(--bg-main);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
 }
 
-.form-group-box {
-    margin-bottom: 20px;
-    background-color: #25252b;
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #3e3e4a;
-}
-.form-group-row {
-    display: flex;
-    gap: 12px;
-}
-.form-group-row > div {
-    flex: 1;
-}
-.sub-label {
+label {
     display: block;
-    font-size: 0.75rem;
-    color: #aaa;
+    font-size: 14px;
+    font-weight: 700;
     margin-bottom: 4px;
+    color: var(--text-muted);
 }
 
-.form-group label {
-    display: block;
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-    color: #f3c66f;
-    font-weight: bold;
+/* 🌟 日本語・英語切り替え時にフォントサイズや高さがガタつかないよう固定統一 */
+input[type="text"], select, textarea {
+    width: 100%;
+    height: 42px; /* 👈 高さを42pxに完全統一 */
+    background-color: var(--bg-panel);
+    border: 2px solid var(--border-flat);
+    color: var(--text-main);
+    padding: 0 10px; /* 上下パディングを排しheightベースで中央寄せ */
+    font-family: 'Noto Sans JP', sans-serif; /* 👈 フォントファミリー基準統一 */
+    font-size: 14px; /* 👈 日本語が最も綺麗に収まる14pxに完全統一 */
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
 }
-
 textarea {
-    width: 100%;
+    height: 110px; /* テキストエリアのみ独自の高さを許可 */
     padding: 10px;
-    background-color: #25252b;
-    border: 1px solid #3e3e4a;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 1rem;
-    font-family: inherit;
-    resize: vertical;
+}
+input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: var(--border-focus);
+    outline: none;
 }
 
-.form-container input[type="text"], .form-container select {
-    width: 100%;
-    padding: 10px;
-    background-color: #25252b;
-    border: 1px solid #3e3e4a;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 1rem;
-}
+.name-input-container { display: flex; gap: 8px; }
+.name-input-container input { flex: 1.5; }
+.name-input-container select { flex: 1; }
 
-.radio-list-row {
-    display: flex;
-    gap: 10px;
-}
-.radio-list-row label {
-    flex: 1;
+.custom-file-upload {
     display: flex;
     align-items: center;
-    background-color: #25252b;
-    padding: 10px 5px;
-    border-radius: 4px;
-    border: 1px solid #3e3e4a;
-    font-size: 0.8rem;
     justify-content: center;
+    width: 100%;
+    height: 42px; /* 👈 高さを他のフォームと統一 */
+    background-color: var(--bg-panel);
+    border: 2px dashed var(--border-flat);
+    color: var(--text-main);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    transition: var(--transition);
 }
-.radio-list-row input {
-    margin-right: 5px;
+.custom-file-upload:hover {
+    border-color: var(--border-focus);
+    background-color: rgba(0, 240, 255, 0.02);
 }
+.custom-file-upload input[type="file"] { display: none; }
 
-.checkbox-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-.checkbox-grid label, .radio-list label {
-    display: flex;
-    align-items: center;
-    background-color: #25252b;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #3e3e4a;
-    font-size: 0.9rem;
-    color: #fff;
-    cursor: pointer;
-}
-.checkbox-grid input, .radio-list input {
-    margin-right: 8px;
-    transform: scale(1.1);
-}
-
-.radio-list {
+.comment-container {
+    background-color: var(--bg-panel);
+    border: 2px solid var(--border-flat);
+    border-radius: var(--radius-sm);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+}
+.comment-container:focus-within { border-color: var(--border-focus); }
+.comment-container textarea {
+    border: none;
+    resize: none;
+}
+.comment-font-select {
+    border: none;
+    border-top: 1px solid var(--border-flat);
+    background-color: var(--bg-main);
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    height: 34px; /* セレクトボックス単体で収まるサイズ */
+    font-size: 13px;
+    cursor: pointer;
 }
 
-optgroup {
-    background-color: #1a1a1e;
-    color: #f3c66f;
-    font-weight: bold;
-}
-option {
-    background-color: #25252b;
-    color: #fff;
-}
+.flex-row { display: flex; gap: 8px; }
+.flex-row > * { flex: 1; min-width: 0; }
 
-.output-container {
+/* 🌟 プレイスタイル、好きな種族、ストーリーを「横3列」に完全固定 */
+.checkbox-grid, .story-progress-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 👈 厳格に3等分 */
+    gap: 6px;
+}
+.checkbox-label, .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px; /* 👈 チェックボックスパネルの高さも一律統一 */
+    font-size: 13px; /* 👈 テキストのはみ出しを防ぐため13pxに固定 */
+    background: var(--bg-panel);
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: 1px solid var(--border-flat);
+    overflow: hidden;
+}
+.checkbox-label span, .radio-label span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.checkbox-label input, .radio-label input { flex-shrink: 0; transform: scale(1.05); }
+
+input[type="color"] {
+    -webkit-appearance: none;
+    border: 2px solid var(--border-flat);
     width: 100%;
-    max-width: 400px;
+    height: 42px; /* 👈 高さを統一 */
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: none; }
+
+.palette-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+.palette-btn {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-flat);
+    padding: 6px;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.palette-preview { display: flex; width: 100%; height: 14px; overflow: hidden; }
+.palette-color { flex: 1; }
+.palette-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-family: monospace; }
+
+.preview-wrapper {
+    width: 100%;
+    max-width: 560px;
+    background: var(--bg-panel);
+    border: 2px solid var(--border-flat);
+    padding: 12px;
+    border-radius: var(--radius-md);
     text-align: center;
-    border-top: 2px dashed #3e3e4a;
-    padding-top: 20px;
 }
-.output-container h2 {
-    font-size: 1.1rem;
-    color: #aaa;
-    margin-bottom: 10px;
+.neon-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    font-family: 'Orbitron', sans-serif;
 }
-
-canvas {
-    display: none;
-}
-
-#resultImage, #resultImageBack {
+.image-clip-container {
     width: 100%;
-    border-radius: 6px;
-    border: 1px solid #3e3e4a;
+    overflow: hidden;
+    background-color: #ebedf2;
+    border: 1px solid var(--border-flat);
+    border-radius: var(--radius-sm);
+}
+.preview-image {
+    width: 100%;
+    height: auto;
     display: block;
-    background-color: #1a1a1e;
-    min-height: 250px;
-    margin-bottom: 15px;
 }
-
-.download-note {
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: 8px;
-}
+.preview-image.interactive-front { cursor: move; }
+.inst-text { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 4px; max-width: 560px; }
 
 footer {
-    margin-top: auto;
-    padding-top: 30px;
-    font-size: 0.7rem;
-    color: #666;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
+    background-color: var(--bg-panel);
+    border-top: 2px solid var(--border-flat);
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.footer-link:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
+
+#cardCanvas, #cardCanvasBack, #hiddenQrContainer { display: none; }
+
+/* プレビュー画像にカード風の角丸と陰影を追加 */
+#resultImage, #resultImageBack {
+    border-radius: 24px; /* カードの角を丸く */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* 近未来的な浮遊感のある影 */
+    overflow: hidden;
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.2s ease;
+}
+
+/* 点灯式の選択メニュー（チェックボックス・ラジオボタン）の上下の隙間を広げる */
+.checkbox-label, .radio-label {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    display: inline-flex;
+    align-items: center;
 }
