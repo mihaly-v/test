@@ -35,12 +35,12 @@ header {
 }
 .header-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 900;
     color: var(--text-main);
     letter-spacing: 0.5px;
 }
-.lang-switcher { display: flex; gap: 6px; }
+/* .lang-switcher { display: flex; gap: 6px; } */
 .lang-btn {
     background: var(--bg-main);
     border: 1px solid var(--border-flat);
@@ -101,7 +101,7 @@ header {
     align-items: center;
     justify-content: flex-start;
     overflow-y: auto;
-    gap: 16px;
+    gap: 8px;
 }
 
 .section-title {
@@ -205,7 +205,7 @@ input[type="text"]:focus, select:focus, textarea:focus {
 .checkbox-grid, .story-progress-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 👈 厳格に3等分 */
-    gap: 6px;
+    gap: 0px 6px;
 }
 .checkbox-label, .radio-label {
     display: flex;
@@ -219,11 +219,13 @@ input[type="text"]:focus, select:focus, textarea:focus {
     cursor: pointer;
     border: 1px solid var(--border-flat);
     overflow: hidden;
+    
 }
 .checkbox-label span, .radio-label span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    
 }
 .checkbox-label input, .radio-label input { flex-shrink: 0; transform: scale(1.05); }
 
@@ -313,7 +315,7 @@ footer {
 
 /* プレビュー画像にカード風の角丸と陰影を追加 */
 #resultImage, #resultImageBack {
-    border-radius: 24px; /* カードの角を丸く */
+    border-radius: 0px; /* カードの角を丸く */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* 近未来的な浮遊感のある影 */
     overflow: hidden;
     max-width: 100%;
@@ -323,8 +325,230 @@ footer {
 
 /* 点灯式の選択メニュー（チェックボックス・ラジオボタン）の上下の隙間を広げる */
 .checkbox-label, .radio-label {
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     display: inline-flex;
     align-items: center;
+}
+
+/* 📱 画面幅が 768px 以下のスマホサイズ時の設定 */
+@media (max-width: 768px) {
+    /* 1. 外側のボディとメインコンテナの余計な余白を完全にゼロにする */
+    html, body, .app-container, .main-container { 
+        display: flex;
+        flex-direction: column; 
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 100vh;
+        position: relative !important;
+        margin: 0 !important;      /* ⚡ 外側の余計なマージンをリセット */
+        padding: 0 !important;     /* ⚡ 左右の隙間をなくして画面端まで広げる */
+        box-sizing: border-box;
+        overflow-x: hidden;        /* 横スクロール（ガタつき）を防止 */
+    }
+
+    /* 🛠️ 2. コントロールパネル（画面横幅いっぱいにピタッと配置） */
+    .control-panel, .settings-panel, .form-container {
+        order: 1; 
+        width: 100% !important;        
+        max-width: 100% !important;    
+        height: auto !important;       
+        position: relative !important; 
+        top: 0 !important;             
+        left: 0 !important;
+        margin: 0 0 20px 0 !important; /* ⚡ 左右マージンは0、下側にだけ少し隙間を空ける */
+        padding: 15px !important;      /* 内側の文字の詰まり具合はお好みで調整してください */
+        box-sizing: border-box;
+        flex: none !important;
+    }
+
+    /* 🖼️ 3. プレビュー画面（コントロールパネルの真下に配置） */
+    .preview-panel, .canvas-container {
+        order: 2; 
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;       
+        position: relative !important; 
+        top: 0 !important;
+        left: 0 !important;
+        margin: 0 0 20px 0 !important; /* ⚡ 左右マージンは0、下側のフッターとの間にだけ隙間 */
+        padding: 0 !important;         /* プレビュー外側の余計なパディングを排除 */
+        box-sizing: border-box;
+        flex: none !important;
+        border-left: 0; 
+        border-right: 0;
+    }
+
+    /* 📝 4. フッター（プレビューの真下、最底面にピタッと配置） */
+    footer, .footer-container {
+        order: 3; 
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important; 
+        bottom: 0 !important;
+        left: 0 !important;
+        margin: 0 !important;          /* ⚡ 無駄なマージンを完全に排除 */
+        padding: 20px 15px !important; /* フッター内の上下左右の余白 */
+        clear: both !important;        
+        box-sizing: border-box;
+    }
+    
+
+    /* 1. 操作メニュー（サイドパネル）の上に完全に重なる独立したプレビュー枠 */
+    .mobile-overlay-preview {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 99999 !important; /* すべての要素の最前面 */
+        background-color: rgb(255, 255, 255, 0.75);
+        /* var(--bg-main) !important; */
+        padding: 60px 20px 20px 20px !important; /* 上部に閉じるボタン用の余白 */
+        overflow-y: auto !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    /* 2. オーバーレイの中に表示するプレビュー画像 */
+    .mobile-overlay-preview img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        display: block !important;
+    }
+
+    /* 3. 画面の右下に固定配置する「プレビューを表示」ボタン */
+    .mobile-preview-trigger {
+        position: fixed;
+        top: 70vh;
+        right: -2px;
+        z-index: 9999;
+        background-color: rgba(90, 90, 90, 0.95);
+        /* var(--text-main); */
+        color: #ffffff;
+        border: 2px solid var(--border-focus);
+        padding: 12px 20px;
+        border-radius: 10px 0 0 10px;
+        /* var(--radius-md); */
+        font-family: 'Orbitron', sans-serif;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0, 240, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .mobile-preview-trigger:hover {
+        background-color: rgba(0, 240, 255, 0.95);
+    }
+    .mobile-preview-trigger.is-hidden {
+        display: none !important;
+    }
+
+    /* 4. オーバーレイ専用の「閉じる」ボタン */
+    .mobile-preview-close {
+        position: fixed;
+        top: 70vh;
+        right: -2px;
+        z-index: 100000;
+        background-color: rgba(90, 90, 90, 0.95);
+        
+        color: #fff;
+        border: 2px solid var(--border-focus);
+        padding: 12px 20px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0, 240, 255, 0.3);
+        border-radius: 10px 0 0 10px;
+    }
+}
+
+/* PC表示時はこれらのスマホ専用ボタンやオーバーレイ構造を非表示 */
+@media (min-width: 769px) {
+    .mobile-preview-trigger, .mobile-preview-close, .mobile-overlay-preview {
+        display: none !important;
+    }
+}
+
+
+/* ========================================================
+   🌐 言語切り替えボタン（サイバーテック・デザイン）
+   ======================================================== */
+
+/* 通常時（PC版）の非表示・表示の強制固定 */
+.lang-short {
+    display: none !important; /* ⚡ 競合に負けないよう important を追加 */
+}
+.lang-full {
+    display: inline !important;
+}
+
+/* ボタンを囲むコンテナ */
+.lang-switcher {
+    display: flex;
+    gap: 6px;               /* ボタン同士の隙間 */
+    background: rgba(0, 0, 0, 0.6); /* 半透明の黒背景 */
+    padding: 3px;
+    border: 1px solid #00f0ff; /* ネオンブルーの極細枠 */
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.2); /* ほんのり光るグロー効果 */
+}
+
+/* ボタン単体のデザイン */
+.lang-switcher button {
+    background: transparent;
+    border: none;
+    color: #888;            /* 通常時は少し暗めの文字色 */
+    font-family: 'Orbitron', Courier, monospace; /* メカニカルなフォント */
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+
+/* マウスホバー時 */
+.lang-switcher button:hover {
+    color: #00f0ff;
+    background: rgba(0, 240, 255, 0.1);
+}
+
+/* ⚡ アクティブ（現在選択中）のボタンデザイン */
+.lang-switcher button.active {
+    background: #00f0ff !important; /* ネオンブルーで満たす */
+    color: #000000 !important;      /* 文字は反転して引き締まった黒に */
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); /* 選択中は強く光らせる */
+}
+
+
+/* ========================================================
+   📱 スマホサイズ（幅 768px 以下）の切り替え
+   ======================================================== */
+@media (max-width: 768px) {
+    /* ⚡ スマホの時はフル表記を完全に消し、ショート(JP/EN)だけを出す */
+    .lang-full {
+        display: none !important;
+    }
+    .lang-short {
+        display: inline !important; /* ⚡ こちらも強制有効化 */
+    }
+
+    /* スマホ画面に合わせてボタンを少しコンパクトに引き締め */
+    .lang-switcher button {
+        padding: 4px 8px !important;
+        font-size: 11px;
+    }
 }
