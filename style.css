@@ -326,10 +326,12 @@ input[type="range"] {
 
 .alphaWrap {
     padding-top: 10px;
-    text-align: center;
 }
 .alphaWrap span {
     display: none;
+}
+.commentYWrap {
+    padding-top: 10px;
 }
 
 /*  プレイスタイル、好きな種族、ストーリーを「横3列」に完全固定 */
