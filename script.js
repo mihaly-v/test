@@ -745,6 +745,15 @@ document.querySelectorAll('input[name="layoutMaskPattern"]').forEach(radio => {
 // =================================================================
 // 8. メイン描画処理（カード表面・裏面）
 // =================================================================
+// alertColorが 'rgb(255,0,0)' や '#ff0000' 形式なら rgba に変換して直接指定
+function toRgba(color, alpha) {
+    const c = document.createElement('canvas').getContext('2d');
+    c.fillStyle = color;
+    const computed = c.fillStyle; // ブラウザが正規化した色 (#rrggbb or rgb(...))
+    const m = computed.match(/\d+/g);
+    return `rgba(${m[0]}, ${m[1]}, ${m[2]}, ${alpha})`;
+}
+
 function renderCanvas() {
     const name = document.getElementById('charName').value || 'Cellica Flame';
     const dc = dcSelect.value || '---';
@@ -838,87 +847,139 @@ function renderCanvas() {
 
     ctx.font = `bold ${CYBER_PANEL_CONFIG.fontSize}px "Share Tech Mono", monospace`;
 
+
+
+
+    
+
+// =================================================================
+    // 💡 縦型・横型、パターンA・Bに応じた【各項目の位置・座標】の設定
+    // =================================================================
+    let playStyleY = 0;
+    let favRaceY = 0;
+    let msqPhaseY = 0;
+    
+    // ジョブコード（うっすら文字）のX座標とY座標を入れる変数
+    let jobCodePt = { x: 0, y: 0 }; 
+
+    if (orientation === 'vertical') {
+        // 📱 ーーー 【 縦 型 】のとき ーーー
+        if (layoutPattern === 'A') {
+            // 【縦型 × パターンA】の位置
+            playStyleY = 980;  
+            favRaceY   = 1110; 
+            msqPhaseY  = 1200; 
+            
+            // ジョブコードの位置（必要に応じて数値を調整してください）
+            jobCodePt = { x: cardW - 45, y: cardH - 160 };
+        } else {
+            // 【縦型 × パターンB】の位置
+            playStyleY = 140;  
+            favRaceY   = 270;  
+            msqPhaseY  = 360;  
+
+            // ジョブコードの位置
+            jobCodePt = { x: cardW - 45, y: cardH - 160 };
+        }
+    } else {
+        // 💻 ーーー 【 横 型 】のとき ーーー
+        if (layoutPattern === 'A') {
+            // 【横型 × パターンA】の位置
+            playStyleY = 510;  
+            favRaceY   = 640;  
+            msqPhaseY  = 730;  
+
+            // ジョブコードの位置
+            jobCodePt = { x: cardW - 45, y: cardH - 170 };
+        } else {
+            // 【横型 × パターンB】の位置
+            playStyleY = 140;  
+            favRaceY   = 270;  
+            msqPhaseY  = 360;  
+
+            // ジョブコードの位置
+            jobCodePt = { x: cardW - 650, y: cardH - 170 };
+        }
+    }
+
+    // =================================================================
+    // 【表面】右下にメインジョブの3文字（アルファベット）をうっすらと表示
+    // =================================================================
+    ctx.save();
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    // ctx.fillStyle = alertColor; // テーマカラー2
+    // ctx.globalAlpha = 0.15;     // 透明度（0.1〜0.2程度がうっすら見えて綺麗です）
+
+    // カードのサイズや向きに応じてフォントサイズと位置を調整
+    ctx.font = '900 120px "Orbitron", sans-serif';
+
+    // ctx.fillStyle = toRgba(alertColor, 0.15);
+    // ctx.fillStyle = `color-mix(in srgb, ${alertColor} 15%, transparent)`;
+    ctx.fillStyle = alertColor + "26"; // 一番シンプル
+    
+    // 💡 上の分岐で決定した X と Y の座標を使って配置
+    ctx.fillText("///////" + targetJobObj.code + "//", jobCodePt.x, jobCodePt.y);
+    ctx.restore();
+
+    // =================================================================
     // --- PLAY_STYLE パネル群 ---
-    let currentY = profPt.y;
+    // =================================================================
+    let currentY = playStyleY; // 💡 上で設定した縦型・横型・パターン別の位置を代入
     ctx.textAlign = 'left';
     ctx.fillStyle = alertColor;
     ctx.font = '700 20px "Orbitron", sans-serif';
     ctx.fillText('PLAY_STYLE:', profPt.x, currentY);
-    
 
     styleMaster.forEach((s, i) => {
         let col = i % 3, row = Math.floor(i / 3);
-
-        // 基本のX座標
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.styleColumnWidth);
 
-        if (col === 1) {
-            targetX -= 15;
-        }
-        if (col === 2) {
-            targetX += 10;
-        }
+        if (col === 1) { targetX -= 15; }
+        if (col === 2) { targetX += 10; }
+        
         drawCustomCyberPanel(ctx, s.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedStylesIDs.includes(s.id), themeColor, CYBER_PANEL_CONFIG.font);
     });
 
+    // =================================================================
     // --- FAV_RACE パネル群 ---
-    currentY += (Math.ceil(styleMaster.length / 3) * CYBER_PANEL_CONFIG.rowHeight) + 40;
+    // =================================================================
+    currentY = favRaceY; // 💡 上で設定した縦型・横型・パターン別の位置を代入
     ctx.fillStyle = alertColor;
     ctx.fillText('FAV_RACE:', profPt.x, currentY);
 
     raceMaster.forEach((r, i) => {
         let col = i % 4, row = Math.floor(i / 4);
-
-        // 基本のX座標
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.raceColumnWidth);
 
         switch (col) {
-            case 1:
-                targetX += 35; // 1と2のときはどちらも +30 する
-                break;
-            case 2:
-                targetX += 40; // 1と2のときはどちらも +30 する
-                break;
-            case 3:
-                targetX += 75; // 3のときは +60 する
-                break;
+            case 1: targetX += 35; break;
+            case 2: targetX += 40; break;
+            case 3: targetX += 75; break;
         }
 
         drawCustomCyberPanel(ctx, r.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedRacesIDs.includes(r.id), themeColor, CYBER_PANEL_CONFIG.font);
     });
 
+    // =================================================================
     // --- MSQ_PHASE パネル群 ---
-    currentY += (Math.ceil(raceMaster.length / 4) * CYBER_PANEL_CONFIG.rowHeight) + 30;
+    // =================================================================
+    currentY = msqPhaseY; // 💡 上で設定した縦型・横型・パターン別の位置を代入
     ctx.fillStyle = alertColor;
     ctx.fillText('MSQ_PHASE:', profPt.x, currentY);
 
     progressMaster.forEach((p, i) => {
         let col = i % 3, row = Math.floor(i / 3);
-
-        // 基本のX座標を計算
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.phaseColumnWidth);
 
         if (col === 1) {
-            targetX += 10;  // 2列目（col:1）を少し右に
+            targetX += 10;
         } else if (col === 2) {
-            targetX += 5;  // 3列目（col:2）を少し左に
+            targetX += 5;
         }
 
         drawCustomCyberPanel(ctx, p.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, p.val <= progressVal, themeColor, CYBER_PANEL_CONFIG.font);
     });
-
-    // 【表面】右下にメインジョブの3文字（アルファベット）をうっすらと表示
-    ctx.save();
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'bottom';
-    ctx.fillStyle = alertColor; // テーマカラー2
-    ctx.globalAlpha = 0.15;     // 透明度（0.1〜0.2程度がうっすら見えて綺麗です）
-
-    // カードのサイズや向きに応じてフォントサイズと位置を調整
-    ctx.font = '900 120px "Orbitron", sans-serif';
-    // 右下の余白（バーコードやQRコードの邪魔にならない位置）に配置
-    ctx.fillText("///////" + targetJobObj.code + "//", cardW - 45, cardH - 160);
-    ctx.restore();
 
     drawCyberBarcode(ctx, 45, cardH - 110, 360, 42, themeColor, alertColor, generatedID);
 
