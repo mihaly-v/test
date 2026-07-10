@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アップデートログ - FFXIV CHARACTER CARD GENERATOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 提供された利用規約のデザインベースに準拠・最適化 */
+        .terms-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        .terms-panel {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-flat);
+            border-radius: var(--radius-md);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .terms-header {
+            border-bottom: 2px solid var(--border-flat);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .terms-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background-color: var(--border-focus); /* #00f0ff ネオンブルー */
+        }
+
+        .terms-title-en {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--border-focus);
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .terms-title-ja {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .terms-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .terms-section {
+            margin-bottom: 30px;
+        }
+
+        .terms-section h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terms-section h2::before {
+            content: '//';
+            font-family: 'Orbitron', sans-serif;
+            color: var(--border-focus);
+            font-size: 14px;
+        }
+
+        /* アップデートリスト用のカスタムスタイル */
+        .update-list {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .update-list li {
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            list-style-type: none;
+            position: relative;
+        }
+
+        .update-list li::before {
+            content: '■';
+            font-size: 8px;
+            color: var(--border-focus);
+            position: absolute;
+            left: -15px;
+            top: 1px;
+        }
+
+        /* ログ内の識別タグ用スタイル（今後の拡張用） */
+        .tag-release {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--border-focus);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            margin-right: 6px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .terms-footer-actions {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-flat);
+            text-align: center;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid var(--border-flat);
+            color: var(--text-muted);
+            font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 10px 24px;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            border-color: var(--border-focus);
+            color: var(--border-focus);
+            background: rgba(0, 240, 255, 0.05);
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 600px) {
+            .terms-container {
+                margin: 20px auto;
+            }
+            .terms-panel {
+                padding: 24px;
+            }
+            .terms-title-ja {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title" id="lblHeaderTitle">FFXIV CHARACTER CARD GENERATOR</div>
+    </header>
+
+    <div class="terms-container">
+        <main class="terms-panel">
+            <div class="terms-header">
+                <div class="terms-title-en">RELEASE NOTES_</div>
+                <h1 class="terms-title-ja">アップデートログ</h1>
+                <div class="terms-meta">LAST UPDATED: 2026.07.09</div>
+            </div>
+
+            <!-- アップデート履歴セクション -->
+             <section class="terms-section">
+                <h2>2026-07-09 : Update</h2>
+                <ul class="update-list">
+                    <li><span class="tag-release">NEW</span>FRONT CARDの一部デザインをアップデートしました。</li>
+                </ul>
+            </section>
+            <section class="terms-section">
+                <h2>2026-07-08 : Hot Fix</h2>
+                <ul class="update-list">
+                    <li>iPhone端末でも画像が保存できるように修正しました。</li>
+                </ul>
+            </section>
+            <section class="terms-section">
+                <h2>2026-07-07 : Released ver1.0</h2>
+                <ul class="update-list">
+                    <li>FFXIV CHARACTER CARD GENERATOR を正式リリースしました。</li>
+                </ul>
+            </section>
+            <div class="terms-footer-actions">
+                <a href="index.html" class="btn-back">&lt; BACK_ TO GENERATOR</a>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
