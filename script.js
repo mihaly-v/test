@@ -1311,7 +1311,7 @@ function drawCustomCyberPanel(tCtx, text, x, y, fSize, active, tCol, font) {
     tCtx.save();
     applyUiShadowIfEnabled(tCtx);
     tCtx.font = `bold ${fSize - 4}px "Share Tech Mono", monospace`;
-    let mWidth = tCtx.measureText(text).width + 4;
+    let mWidth = tCtx.measureText(text).width + 0;
     if (active) {
         tCtx.font = font;
         tCtx.fillStyle = tCol;
