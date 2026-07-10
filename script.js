@@ -147,6 +147,7 @@ const alphaSlider = document.getElementById('alphaSlider');
 const textFontName = document.getElementById('textFontName');
 const textFontComment = document.getElementById('textFontComment');
 const backCommentInput = document.getElementById('backComment');
+const commentYSlider = document.getElementById('commentYSlider');
 const xTwitterIDInput = document.getElementById('xTwitterID');
 const hiddenQrContainer = document.getElementById('hiddenQrContainer');
 const generatedID = `SOL9-ID-00${Math.floor(10000000 + Math.random() * 90000000)}//LVM_ARC`;
@@ -288,7 +289,7 @@ const uiLabels = {
         weekday: "// 平日", weekend: "// 休日",
         inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。",
         mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン", maskBackColor: "// マスク背景色", openMask: "// マスクオプション (クリックで開閉)",
-        backTextColor: "// 裏面テキストカラー", tips: "マスクのデザインは、今後のアップデートで追加/変更する予定です。"
+        backTextColor: "// 裏面テキストカラー", commentY: "// コメント上下位置", tips: "マスクのデザインは、今後のアップデートで追加/変更する予定です。"
     },
     EN: {
         charName: "// Character Name", charNameHolder: "RECOMMENDED: ALPHABET",
@@ -302,7 +303,7 @@ const uiLabels = {
         weekday: "// Weekdays", weekend: "// Weekends",
         inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)",
         mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",maskBackColor: "// Mask Background", openMask: "// Mask Options ( Click to expand/collapse )",
-        backTextColor: "// Rear Text Color", tips: "The mask designs are scheduled to be added or modified in future updates."
+        backTextColor: "// Rear Text Color", commentY: "// Rear Comment Y-Pos", tips: "The mask designs are scheduled to be added or modified in future updates."
     }
 };
 
@@ -345,6 +346,7 @@ function updateLanguageLabels() {
     document.getElementById('lblMaskBack').textContent = data.maskBackColor;
     document.getElementById('lblTips').textContent = data.tips;
     document.getElementById('lblOpenMask').textContent = data.openMask; 
+    document.getElementById('lblCommentY').textContent = data.commentY; 
 }
 
 function constructFormOptions() {
@@ -425,7 +427,7 @@ function constructFormOptions() {
 
     // 各フォーム要素への一括イベント登録
     document.querySelectorAll('input, select, textarea').forEach(el => {
-        if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider' || el.id === 'maskColorPicker') {
+        if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider' || el.id === 'maskColorPicker' || el.id === 'commentYSlider') {
 
             // つまみをドラッグしている最中（input）
             el.oninput = function (e) {
@@ -584,7 +586,7 @@ xTwitterIDInput.addEventListener('input', updateQrAndCard);
 
 function updateCard(e) {
     // スライダー（alphaSlider）やカラーピッカーが動かされたとき
-    if (e && e.target && (e.target.id === 'alphaSlider' || e.target.type === 'range' || e.target.type === 'color')) {
+    if (e && e.target && (e.target.id === 'alphaSlider' || e.target.id === 'commentYSlider' || e.target.type === 'range' || e.target.type === 'color')) {
         renderCanvas(); // 画面の再描画だけを行う（HTML要素を再構築しない）
         return;
     }
@@ -757,6 +759,8 @@ function renderCanvas() {
     const backNameColor = getAutomaticBackTextColor(backColor);
     const fontForName = textFontName.value;
     const fontForComment = textFontComment.value;
+    // スライダーの比率（0.4 ～ 0.8）を取得
+    const commentYRatio = parseFloat(commentYSlider.value || "0.65");
 
     let targetJobObj = { code: "N/A", en: "UNKNOWN" };
     Object.keys(jobMasterCategorized).forEach(rk => {
@@ -1001,7 +1005,9 @@ function renderCanvas() {
     ctxBack.font = `40px ${fontForComment}`;
     ctxBack.textAlign = 'center';
     ctxBack.textBaseline = 'top';
-    wrapAndDrawText(ctxBack, backComment, backW / 2, backH * 0.65, 800, 48);
+    // wrapAndDrawText(ctxBack, backComment, backW / 2, backH * 0.65, 800, 48);
+    // 【修正】固定値だった backH * 0.65 を、スライダー連動の backH * commentYRatio に変更
+    wrapAndDrawText(ctxBack, backComment, backW / 2, backH * commentYRatio, 800, 48);
     ctxBack.restore();
 
     ctxBack.fillStyle = backColor;
